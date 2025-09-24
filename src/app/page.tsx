@@ -18,12 +18,37 @@ export default async function Home() {
       <div className="p-5">
         <h2 className="text-xl font-bold">Olá, Daniel </h2>
         <p>Segunda-feira, 05 de Agosto de 2025</p>
+
+        {/* BUSCA */}
         <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Faça sua busca" />
+          <Input placeholder="Faça sua busca..." />
           <Button>
             <SearchIcon />
           </Button>
         </div>
+
+        {/* BUSCA RÁPIDA */}
+        <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          <Button className="gap-2" variant="secondary">
+            <Image src="/cabelo.svg" width={16} height={16} alt="cabelo" />
+            <p> Cabelo </p>
+          </Button>
+          <Button className="gap-2" variant="secondary">
+            <Image src="/barba.svg" width={16} height={16} alt="barba" />
+            <p> Barba </p>
+          </Button>
+          <Button className="gap-2" variant="secondary">
+            <Image
+              src="/acabamento.svg"
+              width={16}
+              height={16}
+              alt="acabamento"
+            />
+            <p> Acabamento </p>
+          </Button>
+        </div>
+
+        {/* IMAGEM BANNER */}
         <div className="relative mt-6 h-[150px] w-full">
           <Image
             src="/banner-01.png"
