@@ -93,22 +93,34 @@ const SideBarSheet = () => {
             </Link>
           </Button>
         </SheetClose>
-        <Button className="justify-start gap-2" variant="ghost">
-          <CalendarIcon size={18} />
-          Agendamentos
-        </Button>
+        <SheetClose asChild>
+          <Button className="justify-start gap-2" variant="ghost">
+            <CalendarIcon size={18} />
+            Agendamentos
+          </Button>
+        </SheetClose>
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         {quickSearchOption.map((opt) => (
-          <Button
-            key={opt.title}
-            className="justify-start gap-2"
-            variant="ghost"
-          >
-            <Image alt={opt.title} src={opt.imageUrl} height={18} width={18} />
-            {opt.title}
-          </Button>
+          <SheetClose asChild key={opt.title}>
+            <Button
+              key={opt.title}
+              className="justify-start gap-2"
+              variant="ghost"
+              asChild
+            >
+              <Link href={`/barbershops?search=${opt.title}`}>
+                <Image
+                  alt={opt.title}
+                  src={opt.imageUrl}
+                  height={18}
+                  width={18}
+                />
+                {opt.title}
+              </Link>
+            </Button>
+          </SheetClose>
         ))}
       </div>
 

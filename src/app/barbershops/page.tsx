@@ -12,10 +12,24 @@ interface BarberShopsPageProps {
 const BarbersShopsPage = async ({ searchParams }: BarberShopsPageProps) => {
   const barberShops = await db.barberShop.findMany({
     where: {
-      name: {
-        contains: searchParams.search,
-        mode: "insensitive",
-      },
+      OR: [
+        {
+          name: {
+            contains: searchParams.search,
+            mode: "insensitive",
+          },
+        },
+        {
+          barberShopServices: {
+            some: {
+              name: {
+                contains: searchParams.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      ],
     },
   })
 
