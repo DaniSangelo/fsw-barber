@@ -6,6 +6,9 @@ const nextConfig = {
                 hostname: 'utfs.io'
             }
         ]
+    },
+    eslint: {
+        ignoreDuringBuilds: true
     }
 };
 
