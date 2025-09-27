@@ -14,13 +14,14 @@ import {
 import { Calendar } from "./ui/calendar"
 import { ptBR } from "date-fns/locale"
 import { useEffect, useMemo, useState } from "react"
-import { addDays, format, isPast, isToday, set } from "date-fns"
+import { addDays, isPast, isToday, set } from "date-fns"
 import { createBooking } from "../_actions/create-booking"
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 import { getBookings } from "../_actions/get-bookings"
 import { Dialog, DialogContent } from "./ui/dialog"
 import SignInDialog from "./sign-in-dialog"
+import BookingSummary from "./booking-summary"
 
 interface ServiceItemProps {
   service: BarberShopService
@@ -248,7 +249,6 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
                         ))
                       ) : (
                         <p className="text-xs">
-                          {" "}
                           Não há horários disponíveis para esse dia
                         </p>
                       )}
@@ -256,35 +256,14 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
                   )}
                   {selectedTime && selectedDay && (
                     <div className="p-5">
-                      <Card>
-                        <CardContent className="space-y-3 p-3">
-                          <div className="flex items-center justify-between">
-                            <h2 className="font-bold">{service.name}</h2>
-                            <p className="text-sm font-bold">
-                              {Intl.NumberFormat("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              }).format(Number(service.price))}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Data</h2>
-                            <p className="text-sm">
-                              {format(selectedDay, "d 'de' MMMM", {
-                                locale: ptBR,
-                              })}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Horário</h2>
-                            <p className="text-sm">{selectedTime}</p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Barbearia</h2>
-                            <p className="text-sm">{barberShop.name}</p>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <BookingSummary
+                        service={service}
+                        barberShop={barberShop}
+                        selectedDate={set(selectedDay, {
+                          hours: Number(selectedTime.split(":")[0]),
+                          minutes: Number(selectedTime.split(":")[1]),
+                        })}
+                      />
                     </div>
                   )}
                   {selectedTime && selectedDay && (
