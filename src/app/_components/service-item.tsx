@@ -113,22 +113,15 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
 
   const handleCreateBooking = async () => {
     try {
-      if (!selectedDay || !selectedTime) {
+      if (!selectedDate) {
         return
       }
-
-      const hours = Number(selectedTime?.split(":")[0])
-      const minutes = Number(selectedTime?.split(":")[1])
-      const date = set(selectedDay, {
-        minutes,
-        hours,
-      })
 
       await createBooking({
         barberShopServiceId: service.id,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         userId: (data?.user as any).id,
-        date,
+        date: selectedDate,
       })
       handleBookingSheetOpenChange()
       toast.success("Reserva realizada com sucesso!", {
@@ -142,6 +135,15 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
       toast.error("Erro ao realizar reserva!")
     }
   }
+
+  const selectedDate = useMemo(() => {
+    if (!selectedDay || !selectedTime) return
+
+    return set(selectedDay, {
+      hours: Number(selectedTime.split(":")[0]),
+      minutes: Number(selectedTime.split(":")[1]),
+    })
+  }, [selectedDay, selectedTime])
 
   const timeList = useMemo(() => {
     if (!selectedDay) return []
@@ -254,15 +256,12 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
                       )}
                     </div>
                   )}
-                  {selectedTime && selectedDay && (
+                  {selectedDate && (
                     <div className="p-5">
                       <BookingSummary
                         service={service}
                         barberShop={barberShop}
-                        selectedDate={set(selectedDay, {
-                          hours: Number(selectedTime.split(":")[0]),
-                          minutes: Number(selectedTime.split(":")[1]),
-                        })}
+                        selectedDate={selectedDate}
                       />
                     </div>
                   )}
